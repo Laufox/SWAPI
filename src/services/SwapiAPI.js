@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const BASE_URL = 'https://swapi.dev/api'
 
-const getAllPeople = async () => {
-    const data = await axios.get(`${BASE_URL}/people`)
+const getAllPeople = async (page = 1) => {
+    const data = await axios.get(`${BASE_URL}/people/?page=${page}`)
     return data;
 }
 
