@@ -11,6 +11,7 @@ import Navigation from './components/Navigation';
 import Homepage from './pages/Homepage';
 import People from './pages/People';
 import Movies from './pages/Movies';
+import Character from './pages/Character';
 
 /**
  * 
@@ -29,6 +30,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Homepage />} />
                     <Route path="/people" element={<People />} />
+                    <Route path="/people/:id" element={<Character />} />
                     <Route path="/films" element={<Movies />} />
                 </Routes>
             </Container>

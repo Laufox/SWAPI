@@ -27,7 +27,6 @@ const Movies = () => {
     const getMovies = async (page) => {
         const res = await SwapiAPI.getAllFilms(page);
         if (res.status === 200) {
-            console.log(res.data);
             setFilmList(res.data.results)
             setNextPage(res.data.next);
             setPrevPage(res.data.previous);

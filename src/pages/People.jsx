@@ -27,7 +27,6 @@ const People = () => {
     const getPeople = async (page) => {
         const res = await SwapiAPI.getAllPeople(page);
         if (res.status === 200) {
-            console.log(res.data);
             setPeopleList(res.data.results)
             setNextPage(res.data.next);
             setPrevPage(res.data.previous);
