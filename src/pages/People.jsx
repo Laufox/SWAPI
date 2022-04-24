@@ -1,15 +1,29 @@
+// Import hooks from react
 import { useEffect, useState } from 'react';
+// Import bootstrap components
 import Button from 'react-bootstrap/Button';
-import SwapiList from '../components/SwapiList';
+// Import own components
+import PeopleList from '../components/PeopleList';
+// Import functions that communicate with SWAPI API
 import SwapiAPI from '../services/SwapiAPI';
 
+/**
+ * 
+ *  Page for traffic to /people
+ *  @returns full list of people with pagination
+ * 
+ */
 const People = () => {
 
+    // Characters info for current page
     const [peopleList, setPeopleList] = useState([]);
+    // Page that is currently displaying
     const [currentPage, setCurrentPage] = useState(1);
+    // Usestates for knowing if pagination button should be clickable
     const [prevPage, setPrevPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
 
+    // Request data from API and apply reult to useStates
     const getPeople = async (page) => {
         const res = await SwapiAPI.getAllPeople(page);
         if (res.status === 200) {
@@ -21,12 +35,12 @@ const People = () => {
         
     }
 
+    // Function to change what page the user is currently on
     const switchPage = async (num) => {
-        console.log('Before update: ', currentPage);
         setCurrentPage( (prevCurrentPage) => {return prevCurrentPage + num} );
-        console.log('After update: ', currentPage);
     }
 
+    // Use effect to run whenever currentPage state changes
     useEffect( () => {
         getPeople(currentPage);
     }, [currentPage]);
@@ -35,10 +49,12 @@ const People = () => {
         <>
             <h1>List of people</h1>
 
+            {/* If theres any result from API, display list component to user */}
             {
-                peopleList && <SwapiList list={peopleList} title="Characters" />
+                peopleList && <PeopleList list={peopleList} title="Characters" />
             }
 
+            {/* Display pagination */}
             <Button variant="info" onClick={ () => { switchPage(-1) } } disabled={prevPage === null}>Previous</Button>
             <Button variant="info" onClick={ () => { switchPage(1) } } disabled={nextPage === null}>Next</Button>
         </>

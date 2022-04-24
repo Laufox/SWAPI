@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom"
-
+/**
+ *  Page for traffic to /
+ */
 const Homepage = () => {
     return (
         <>

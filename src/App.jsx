@@ -1,17 +1,29 @@
+// Import css files
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css';
+// Import components from react-router-dom
 import {Routes, Route } from 'react-router-dom'
-import Navigation from './components/Navigation';
-import Homepage from './pages/Homepage';
+// Import Components from react-bootstrap
 import Container from 'react-bootstrap/Container';
+// Import own components
+import Navigation from './components/Navigation';
+// Import own pages
+import Homepage from './pages/Homepage';
 import People from './pages/People';
 
+/**
+ * 
+ *  Main site component holding navigation and site routing
+ * 
+ */
 const App = () => {
 
     return (
         <div id="App">
+            {/* Navigation component to be shown on all pages */}
             <Navigation />
 
+            {/* Container with routes for all possible pages the user can get to */}
             <Container>
                 <Routes>
                     <Route path="/" element={<Homepage />} />
