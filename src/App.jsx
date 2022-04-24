@@ -10,6 +10,7 @@ import Navigation from './components/Navigation';
 // Import own pages
 import Homepage from './pages/Homepage';
 import People from './pages/People';
+import Movies from './pages/Movies';
 
 /**
  * 
@@ -28,6 +29,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<Homepage />} />
                     <Route path="/people" element={<People />} />
+                    <Route path="/films" element={<Movies />} />
                 </Routes>
             </Container>
             
