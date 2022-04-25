@@ -1,5 +1,5 @@
 // Import hooks from react
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 // Import from react-router-dom
 import { useSearchParams } from 'react-router-dom';
 // Import bootstrap components
@@ -55,9 +55,11 @@ const People = () => {
     }
 
     const handleSearch = (query) => {
+
         // Set query parameters and reset page number
         setSearchParams( { query } )
         setCurrentPage(1);
+
     }
 
     // Use effect to run whenever currentPage or query state changes
