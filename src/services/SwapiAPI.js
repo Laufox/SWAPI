@@ -28,11 +28,17 @@ const getMovie = async (id) => {
     return data;
 }
 
+const getSearch = async (resource, query, page) => {
+    const data = await axios.get(`${BASE_URL}/${resource}/?search=${query}&page=${page}`);
+    return data;
+}
+
 // Export function the be used by other files
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
 	getAllPeople,
     getCharacter,
     getAllFilms,
-    getMovie
+    getMovie,
+    getSearch
 }
