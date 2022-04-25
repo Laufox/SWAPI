@@ -17,7 +17,7 @@ const Film = () => {
 
     // Get id param from route
     const { id } = useParams();
-    // Characters info for current page
+    // Movie info for current page
     const [filmData, setFilmData] = useState();
 
     // Request data from API and apply result to useStates
