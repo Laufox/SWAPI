@@ -4,9 +4,9 @@ import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 // Import bootstrap components
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form'
 // Import own components
 import PeopleList from '../components/PeopleList';
+import SearchForm from '../components/SearchForm';
 // Import functions that communicate with SWAPI API
 import SwapiAPI from '../services/SwapiAPI';
 
@@ -30,9 +30,6 @@ const People = () => {
     // Usestates for knowing if pagination button should be clickable
     const [prevPage, setPrevPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
-    // Usestates for searches
-    const [searchInput, setSearchInput] = useState('');
-    const searchInputRef = useRef();
 
     // Request data from API and apply reult to useStates
     const getPeople = async (page, query = null) => {
@@ -57,16 +54,10 @@ const People = () => {
         
     }
 
-    // When a form is submitted
-    const handleSubmit = (e) => {
-
-        // Prevent default form behaviour
-        e.preventDefault();
-
+    const handleSearch = (query) => {
         // Set query parameters and reset page number
-        setSearchParams( {query: searchInput } )
+        setSearchParams( { query } )
         setCurrentPage(1);
-
     }
 
     // Use effect to run whenever currentPage or query state changes
@@ -80,23 +71,8 @@ const People = () => {
         <>
             <h1>List of people</h1>
 
-            <Form onSubmit={handleSubmit}>
-				<Form.Group className="mb-3" controlId="newTitle">
-					<Form.Label>Search Query</Form.Label>
-					<Form.Control
-						onChange={e => setSearchInput(e.target.value)}
-						placeholder="Enter your search query"
-						ref={searchInputRef}
-						required
-						type="text"
-						value={searchInput}
-					/>
-				</Form.Group>
-
-				<div className="d-flex justify-content-between">
-					<Button variant="success" type="submit" disabled={!searchInput.length}>Search</Button>
-				</div>
-			</Form>
+            {/* Search form component */}
+            <SearchForm onSearch={handleSearch} />
 
             {/* If theres any result from API, display list component to user */}
             {
