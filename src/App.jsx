@@ -22,7 +22,7 @@ import Film from './pages/Film';
 const App = () => {
 
     return (
-        <div id="App">
+        <div id="app">
             {/* Navigation component to be shown on all pages */}
             <Navigation />
 

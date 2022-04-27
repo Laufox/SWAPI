@@ -1,10 +1,10 @@
 // Import component from react-bootstrap
 import ListGroup from 'react-bootstrap/ListGroup'
+import Button from 'react-bootstrap/Button';
 // Import from react-router-dom
 import { Link } from "react-router-dom"
 // Import function to extract ID value from URL
 import { getIdFromUrl } from '../services/getIdFromUrl'
-import Button from 'react-bootstrap/Button';
 
 /** 
  *  Component to display a list of films from SWAPI API
