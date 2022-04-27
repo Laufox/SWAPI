@@ -1,3 +1,48 @@
 .App {
-  text-align: center;
+    text-align: center;
+}
+
+.swapi-list {
+    margin: 1rem 0;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    gap: 1rem;
+}
+
+.swapi-list .list-group-item {
+    flex-basis: 45%;
+    border: 1px solid rgba(150, 150, 150);
+    padding: 0;
+}
+
+.swapi-list .list-group-item article {
+    display: flex;
+    flex-flow: column;
+    min-height: 200px;
+}
+
+.swapi-list .list-group-item article header {
+    flex-basis: 50px;
+    border-bottom: 1px solid black;
+    padding: 10px;
+}
+
+.swapi-list .list-group-item article main {
+    flex-basis: 100px;
+    padding: 10px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.swapi-list .list-group-item article footer {
+    flex-basis: 50px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.swapi-list .list-group-item article footer button {
+    border: 1px solid rgb(70, 70, 70);
 }
