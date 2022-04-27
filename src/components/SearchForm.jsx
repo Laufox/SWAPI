@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form'
 
-const AddNewTodoForm = ({ onSearch }) => {
+const AddNewTodoForm = ({ onSearch, onShowAll }) => {
 	
     // Usestates for searches
     const [searchInput, setSearchInput] = useState('');
@@ -19,13 +19,22 @@ const AddNewTodoForm = ({ onSearch }) => {
 
     }
 
+	const handleReset = (e) => {
+
+		// Prevent default form behaviour
+		e.preventDefault();
+		setSearchInput('');
+		onShowAll();
+
+	}
+
 	// focus on input field when component is mounted
 	useEffect(() => {
 		searchInputRef.current.focus()
 	}, []);
 
 	return (
-		<Form onSubmit={handleSubmit}>
+		<Form onSubmit={handleSubmit} onReset={handleReset}>
 			<Form.Group className="mb-3" controlId="newTitle">
 				<Form.Label>Search Query</Form.Label>
 				<Form.Control
@@ -38,8 +47,9 @@ const AddNewTodoForm = ({ onSearch }) => {
 				/>
 			</Form.Group>
 
-			<div className="d-flex justify-content-between">
+			<div className="d-flex justify-content-start gap-3">
 				<Button variant="success" type="submit" disabled={!searchInput.length}>Search</Button>
+				<Button variant="warning" type="reset" >Show all</Button>
 			</div>
 		</Form>
 	)

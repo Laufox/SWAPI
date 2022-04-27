@@ -62,6 +62,15 @@ const People = () => {
 
     }
 
+    const handleReset = () => {
+
+        // Set query parameters and reset page number
+        setSearchParams( {  } )
+        setCurrentPage(1);
+        getPeople(1);
+
+    }
+
     // Use effect to run whenever currentPage or query state changes
     useEffect( () => {
 
@@ -74,7 +83,7 @@ const People = () => {
             <h1>List of people</h1>
 
             {/* Search form component */}
-            <SearchForm onSearch={handleSearch} />
+            <SearchForm onSearch={handleSearch} onShowAll={handleReset} />
 
             {/* If theres any result from API, display list component to user */}
             {
