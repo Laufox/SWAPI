@@ -46,3 +46,41 @@
 .swapi-list .list-group-item article footer button {
     border: 1px solid rgb(70, 70, 70);
 }
+
+.film-item-article {
+    padding: 1rem;
+    border: 1px solid black;
+}
+
+.film-item-article header{
+    border-bottom: 1px solid black;
+}
+
+.film-item-article main {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 1rem 0;
+}
+
+.film-item-article main h3 {
+    width: 100%;
+}
+
+.film-item-article main pre {
+    width: 60%;
+    text-align: center;
+}
+
+.film-item-article main aside {
+    width: 40%;
+    border-left: 1px solid rgb(201, 201, 201);
+    padding-left: 1rem;
+}
+
+.film-item-article footer .character-list {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1rem;
+    width: 50%;
+    margin-left: 4rem;
+}
