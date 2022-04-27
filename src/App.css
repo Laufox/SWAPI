@@ -47,7 +47,7 @@
     border: 1px solid rgb(70, 70, 70);
 }
 
-.film-item-article {
+.film-item-article, .character-item-article {
     padding: 1rem;
     border: 1px solid black;
 }
@@ -77,7 +77,7 @@
     padding-left: 1rem;
 }
 
-.film-item-article footer .character-list {
+.film-item-article footer .character-list, .character-item-article footer .film-list {
     display: flex;
     flex-flow: row wrap;
     gap: 1rem;

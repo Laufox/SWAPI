@@ -1,11 +1,13 @@
 // Import hooks from react
 import { useEffect, useState } from 'react';
 // Import from react-router-dom
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 // Import bootstrap components
 import Button from 'react-bootstrap/Button';
 // Import functions that communicate with SWAPI API
 import SwapiAPI from '../services/SwapiAPI';
+// Import function to extract ID value from URL
+import { getIdFromUrl } from '../services/getIdFromUrl'
 
 /**
  * 
@@ -39,7 +41,37 @@ const Character = () => {
             <h1>Character info</h1>
 
             {
-                characterData && <h2>{characterData.name}</h2>
+                characterData && (
+                    <article className='character-item-article'>
+                        <header>
+                            <h2>{characterData.name}</h2>
+                        </header>
+
+                        <main>
+                            <h3>Attributes</h3>
+                            <ul>
+                                <li>Born: {characterData.birth_year}</li>
+                                <li>Gender: {characterData.gender}</li>
+                                <li>Hieght: {characterData.height} cm</li>
+                                <li>Mass: {characterData.mass} kg</li>
+                                <li>Skin color: {characterData.skin_color}</li>
+                                <li>Hair color: {characterData.hair_color}</li>
+                                <li>Eye color: {characterData.eye_color}</li>  
+                            </ul>     
+                        </main>
+
+                        <footer>
+                            <h3>Stars in: </h3>
+                            <div className='film-list'>
+                            {
+                                characterData.films.map( (film, index) => {
+                                    return <Button key={index} variant="info" as={Link} to={`/films/${getIdFromUrl(film)}`}>{getIdFromUrl(film).padStart(2, '0')}</Button>
+                                } )
+                            }
+                            </div>
+                        </footer>
+                    </article>
+                )
             }
         </>
     )
