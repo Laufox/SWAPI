@@ -124,3 +124,15 @@
 .pages-list-item.current {
     background-color: rgb(238, 255, 216);
 }
+
+.loading-container {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+}
+
+.loading-container p {
+    font-size: 2rem;
+}

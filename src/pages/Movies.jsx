@@ -8,6 +8,7 @@ import SearchForm from '../components/SearchForm';
 // Import functions that communicate with SWAPI API
 import SwapiAPI from '../services/SwapiAPI';
 import Pagination from '../components/Pagination';
+import Loading from '../components/Loading';
 
 /**
  * 
@@ -30,18 +31,25 @@ const Movies = () => {
     const [prevPage, setPrevPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
     const [numberOfPages, setNumberOfPages] = useState();
+    const [loading, setLoading] = useState(false);
 
     // Request data from API and apply reult to useStates
     const getMovies = async (page, query=null) => {
 
-        // If there's a query parameter, request a search otherwise request all people
-        const res = query ? await SwapiAPI.getSearch("films", query, page) : await SwapiAPI.getAllFilms(page);
-        if (res.status === 200) {
-            setFilmList(res.data.results)
-            setNextPage(res.data.next);
-            setPrevPage(res.data.previous);
-            setNumberOfPages(res.data.count);
+        setLoading(true);
+        try {
+            // If there's a query parameter, request a search otherwise request all people
+            const res = query ? await SwapiAPI.getSearch("films", query, page) : await SwapiAPI.getAllFilms(page);
+            if (res.status === 200) {
+                setFilmList(res.data.results)
+                setNextPage(res.data.next);
+                setPrevPage(res.data.previous);
+                setNumberOfPages(res.data.count);
+            }
+        } catch (error) {
+            
         }
+        setLoading(false);
         
     }
 
@@ -80,6 +88,10 @@ const Movies = () => {
 
             {/* Search form component */}
             <SearchForm onSearch={handleSearch} />
+
+            {
+                loading && <Loading resource='Movies' />
+            }
 
             {/* If theres any result from API, display list component to user */}
             {

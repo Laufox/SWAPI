@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import SwapiAPI from '../services/SwapiAPI';
 // Import function to extract ID value from URL
 import { getIdFromUrl } from '../services/getIdFromUrl'
+import Loading from '../components/Loading';
 
 /**
  * 
@@ -21,13 +22,21 @@ const Film = () => {
     const { id } = useParams();
     // Movie info for current page
     const [filmData, setFilmData] = useState();
+    const [loading, setLoading] = useState(false);
 
     // Request data from API and apply result to useStates
     const getMovie = async (id) => {
-        const res = await SwapiAPI.getMovie(id);
-        if (res.status === 200) {
-            setFilmData(res.data)
+
+        setLoading(true);
+        try {
+            const res = await SwapiAPI.getMovie(id);
+            if (res.status === 200) {
+                setFilmData(res.data)
+            }
+        } catch (error) {
+            
         }
+        setLoading(false);
         
     }
 
@@ -39,6 +48,10 @@ const Film = () => {
     return (
         <>
             <h1>Movie info</h1>
+
+            {
+                loading && <Loading resource='Movie' />
+            }
 
             {
                 filmData && (
