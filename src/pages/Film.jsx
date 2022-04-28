@@ -9,6 +9,7 @@ import SwapiAPI from '../services/SwapiAPI';
 // Import function to extract ID value from URL
 import { getIdFromUrl } from '../services/getIdFromUrl'
 import Loading from '../components/Loading';
+import ErrorEl from '../components/ErrorEl';
 
 /**
  * 
@@ -21,8 +22,9 @@ const Film = () => {
     // Get id param from route
     const { id } = useParams();
     // Movie info for current page
-    const [filmData, setFilmData] = useState();
+    const [filmData, setFilmData] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     // Request data from API and apply result to useStates
     const getMovie = async (id) => {
@@ -32,9 +34,13 @@ const Film = () => {
             const res = await SwapiAPI.getMovie(id);
             if (res.status === 200) {
                 setFilmData(res.data)
+            }else {
+                setHasError(true);
+                setFilmData(false);
             }
         } catch (error) {
-            
+            setHasError(true);
+            setFilmData(false);
         }
         setLoading(false);
         
@@ -51,6 +57,10 @@ const Film = () => {
 
             {
                 loading && <Loading resource='Movie' />
+            }
+
+            {
+                hasError && <ErrorEl resource='Movie' />
             }
 
             {

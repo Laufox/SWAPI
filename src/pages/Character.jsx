@@ -9,6 +9,7 @@ import SwapiAPI from '../services/SwapiAPI';
 // Import function to extract ID value from URL
 import { getIdFromUrl } from '../services/getIdFromUrl';
 import Loading from '../components/Loading';
+import ErrorEl from '../components/ErrorEl';
 
 /**
  * 
@@ -21,8 +22,9 @@ const Character = () => {
     // Get id param from route
     const { id } = useParams();
     // Characters info for current page
-    const [characterData, setCharacterData] = useState();
+    const [characterData, setCharacterData] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     // Request data from API and apply result to useStates
     const getCharacter = async (id) => {
@@ -32,9 +34,13 @@ const Character = () => {
             const res = await SwapiAPI.getCharacter(id);
             if (res.status === 200) {
                 setCharacterData(res.data)
+            }else {
+                setHasError(true);
+                setCharacterData(false);
             }
         } catch (error) {
-            
+            setHasError(true);
+            setCharacterData(false);
         }
         setLoading(false);
         
@@ -51,6 +57,10 @@ const Character = () => {
 
             {
                 loading && <Loading resource='Character' />
+            }
+
+            {
+                hasError && <ErrorEl resource='Character' />
             }
 
             {

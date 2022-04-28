@@ -9,6 +9,7 @@ import SearchForm from '../components/SearchForm';
 import SwapiAPI from '../services/SwapiAPI';
 import Pagination from '../components/Pagination';
 import Loading from '../components/Loading';
+import ErrorEl from '../components/ErrorEl';
 
 /**
  * 
@@ -24,7 +25,7 @@ const People = () => {
     const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
     const query = searchParams.get('query');
     // Characters info for current page
-    const [peopleList, setPeopleList] = useState([]);
+    const [peopleList, setPeopleList] = useState(false);
     // Page that is currently displaying
     const [currentPage, setCurrentPage] = useState(page);
     // Usestates for knowing if pagination button should be clickable
@@ -32,6 +33,7 @@ const People = () => {
     const [nextPage, setNextPage] = useState(null);
     const [numberOfPages, setNumberOfPages] = useState();
     const [loading, setLoading] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     // Request data from API and apply reult to useStates
     const getPeople = async (page, query = null) => {
@@ -45,9 +47,13 @@ const People = () => {
                 setNextPage(res.data.next);
                 setPrevPage(res.data.previous);
                 setNumberOfPages(res.data.count);
+            } else {
+                setHasError(true);
+                setPeopleList(false);
             }
         } catch (error) {
-            
+            setHasError(true);
+            setPeopleList(false);
         }
         setLoading(false);
         
@@ -104,12 +110,20 @@ const People = () => {
                 loading && <Loading resource='Characters' />
             }
 
-            {/* If theres any result from API, display list component to user */}
             {
-                peopleList && <PeopleList list={peopleList} title="Characters" />
+                hasError && <ErrorEl resource='Movies' />
             }
 
-            <Pagination paging={{prevPage, nextPage, currentPage, numberOfPages}} onSwitch={ switchPage } />
+            {/* If theres any result from API, display list component to user */}
+            {
+                peopleList && (
+                    <>
+                    <PeopleList list={peopleList} title="Characters" />
+                    <Pagination paging={{prevPage, nextPage, currentPage, numberOfPages}} onSwitch={ switchPage } />
+                    </>
+                )
+            }
+
         </>
     )
 }
