@@ -29,6 +29,7 @@ const Movies = () => {
     // Usestates for knowing if pagination button should be clickable
     const [prevPage, setPrevPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
+    const [numberOfPages, setNumberOfPages] = useState();
 
     // Request data from API and apply reult to useStates
     const getMovies = async (page, query=null) => {
@@ -39,6 +40,7 @@ const Movies = () => {
             setFilmList(res.data.results)
             setNextPage(res.data.next);
             setPrevPage(res.data.previous);
+            setNumberOfPages(res.data.count);
         }
         
     }
@@ -84,7 +86,7 @@ const Movies = () => {
                 FilmList && <FilmList list={filmList} title="Movies" />
             }
 
-            <Pagination paging={ {prevPage, nextPage} } onSwitch={ switchPage } />
+            <Pagination paging={ {prevPage, nextPage, currentPage, numberOfPages} } onSwitch={ switchPage } />
         </>
     )
 }

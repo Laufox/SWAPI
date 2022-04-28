@@ -97,3 +97,30 @@
     text-decoration: none;
     font-size: 1.5rem;
 }
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.pagination-container button {
+    min-width: 86px;
+}
+
+.pages-list-container {
+    display: flex;
+    gap: 0.3rem;
+}
+
+.pages-list-item {
+    padding: 7px;
+    min-width: 40px;
+    background-color: rgb(238, 227, 216);
+    border: 2px solid rgb(29, 21, 21);
+    text-align: center;
+}
+
+.pages-list-item.current {
+    background-color: rgb(238, 255, 216);
+}

@@ -29,6 +29,7 @@ const People = () => {
     // Usestates for knowing if pagination button should be clickable
     const [prevPage, setPrevPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
+    const [numberOfPages, setNumberOfPages] = useState();
 
     // Request data from API and apply reult to useStates
     const getPeople = async (page, query = null) => {
@@ -39,6 +40,7 @@ const People = () => {
             setPeopleList(res.data.results)
             setNextPage(res.data.next);
             setPrevPage(res.data.previous);
+            setNumberOfPages(res.data.count);
         }
         
     }
@@ -95,7 +97,7 @@ const People = () => {
                 peopleList && <PeopleList list={peopleList} title="Characters" />
             }
 
-            <Pagination paging={{prevPage: prevPage, nextPage: nextPage}} onSwitch={ switchPage } />
+            <Pagination paging={{prevPage, nextPage, currentPage, numberOfPages}} onSwitch={ switchPage } />
         </>
     )
 }
