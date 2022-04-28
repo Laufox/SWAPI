@@ -2,13 +2,12 @@
 import { useEffect, useState } from 'react';
 // Import from react-router-dom
 import { useSearchParams } from 'react-router-dom';
-// Import bootstrap components
-import Button from 'react-bootstrap/Button';
 // Import own components
 import PeopleList from '../components/PeopleList';
 import SearchForm from '../components/SearchForm';
 // Import functions that communicate with SWAPI API
 import SwapiAPI from '../services/SwapiAPI';
+import Pagination from '../components/Pagination';
 
 /**
  * 
@@ -71,6 +70,12 @@ const People = () => {
 
     }
 
+    useEffect( () => {
+
+        setCurrentPage(page)
+
+    }, [page])
+
     // Use effect to run whenever currentPage or query state changes
     useEffect( () => {
 
@@ -90,9 +95,7 @@ const People = () => {
                 peopleList && <PeopleList list={peopleList} title="Characters" />
             }
 
-            {/* Display pagination */}
-            <Button variant="info" onClick={ () => { switchPage(-1) } } disabled={prevPage === null}>Previous</Button>
-            <Button variant="info" onClick={ () => { switchPage(1) } } disabled={nextPage === null}>Next</Button>
+            <Pagination paging={{prevPage: prevPage, nextPage: nextPage}} onSwitch={ switchPage } />
         </>
     )
 }

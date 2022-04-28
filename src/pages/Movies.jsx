@@ -2,13 +2,12 @@
 import { useEffect, useState } from 'react';
 // Import from react-router-dom
 import { useSearchParams } from 'react-router-dom';
-// Import bootstrap components
-import Button from 'react-bootstrap/Button';
 // Import own components
 import FilmList from '../components/FilmList';
 import SearchForm from '../components/SearchForm';
 // Import functions that communicate with SWAPI API
 import SwapiAPI from '../services/SwapiAPI';
+import Pagination from '../components/Pagination';
 
 /**
  * 
@@ -60,6 +59,12 @@ const Movies = () => {
         setCurrentPage(1);
     }
 
+    useEffect( () => {
+
+        setCurrentPage(page)
+
+    }, [page])
+
     // Use effect to run whenever currentPage state changes
     useEffect( () => {
 
@@ -79,9 +84,7 @@ const Movies = () => {
                 FilmList && <FilmList list={filmList} title="Movies" />
             }
 
-            {/* Display pagination */}
-            <Button variant="info" onClick={ () => { switchPage(-1) } } disabled={prevPage === null}>Previous</Button>
-            <Button variant="info" onClick={ () => { switchPage(1) } } disabled={nextPage === null}>Next</Button>
+            <Pagination paging={ {prevPage, nextPage} } onSwitch={ switchPage } />
         </>
     )
 }
