@@ -7,8 +7,10 @@ import { Link, NavLink } from 'react-router-dom'
 
 /**
  * 
- * @returns Navigation menu
+ *  Component for rendering navigation menu
+ * 
  */
+
 const Navigation = () => {
 	return (
 

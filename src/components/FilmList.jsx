@@ -7,8 +7,11 @@ import { Link } from "react-router-dom"
 import { getIdFromUrl } from '../services/getIdFromUrl'
 
 /** 
+ * 
  *  Component to display a list of films from SWAPI API
+ * 
  */
+
 const FilmList = ({list, title}) => {
     
     return (

@@ -1,15 +1,24 @@
+// Import from react-bootstrap
 import Button from 'react-bootstrap/Button'
+
+/**
+ * 
+ *  Component for rendering pagination elements
+ * 
+ */
 
 const Pagination = ({paging, onSwitch}) => {
 
+    // Array to hold a number element for each pagination page
     const pages = [];
 
+    // Push elements to page array as many times as the numberOfPages property in paging argument
     const calcPages = () => {
-        const nrOfIterations = Math.ceil( paging.numberOfPages / 10 );
 
-        for (let i = 1; i <= nrOfIterations; i++) {
+        for (let i = 1; i <= paging.numberOfPages; i++) {
             pages.push(i);
         }
+
     }
     calcPages();
 
@@ -21,6 +30,7 @@ const Pagination = ({paging, onSwitch}) => {
 
             <div className='pages-list-container'>
                 {
+                    // Print out list of available pages
                     pages.map( (page, index) => {
                         return <span key={index} className={page === paging.currentPage ? 'pages-list-item current' : 'pages-list-item'}>{page.toString().padStart(2, '0')}</span>
                     } )

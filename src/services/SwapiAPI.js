@@ -28,12 +28,13 @@ const getMovie = async (id) => {
     return data;
 }
 
+// Function that returns search result on a specific resource
 const getSearch = async (resource, query, page) => {
     const data = await axios.get(`${BASE_URL}/${resource}/?search=${query}&page=${page}`);
     return data;
 }
 
-// Export function the be used by other files
+// Export functions that can be used by other files
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
 	getAllPeople,

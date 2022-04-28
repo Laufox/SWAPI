@@ -5,33 +5,36 @@ import { useSearchParams } from 'react-router-dom';
 // Import own components
 import FilmList from '../components/FilmList';
 import SearchForm from '../components/SearchForm';
-// Import functions that communicate with SWAPI API
-import SwapiAPI from '../services/SwapiAPI';
 import Pagination from '../components/Pagination';
 import Loading from '../components/Loading';
 import ErrorEl from '../components/ErrorEl';
+// Import functions that communicate with SWAPI API
+import SwapiAPI from '../services/SwapiAPI';
 
 /**
  * 
- *  Page for traffic to /people
- *  @returns full list of people with pagination
+ *  Page for traffic to /films
  * 
  */
+
 const Movies = () => {
 
     // Search param to show results for page given by url query
     const [searchParams, setSearchParams] = useSearchParams();
-    // If url has page param use it in page constant, otherwise set it to one
+    // Page constant to hold value of page parameter in url, or one if paramter is not set
     const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
+    // Query constant to hold value of query parameter in url
     const query = searchParams.get('query');
-    // Characters info for current page
+    // Films info for current page
     const [filmList, setFilmList] = useState(false);
-    // Page that is currently displaying
+    // Pagination page that is currently displaying
     const [currentPage, setCurrentPage] = useState(page);
     // Usestates for knowing if pagination button should be clickable
     const [prevPage, setPrevPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
+    // Amount of pagination pages to display
     const [numberOfPages, setNumberOfPages] = useState();
+    // Usestates for loading and error status
     const [loading, setLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
 
@@ -40,13 +43,13 @@ const Movies = () => {
 
         setLoading(true);
         try {
-            // If there's a query parameter, request a search otherwise request all people
+            // If there's a query parameter, request a search, otherwise request all people
             const res = query ? await SwapiAPI.getSearch("films", query, page) : await SwapiAPI.getAllFilms(page);
             if (res.status === 200) {
                 setFilmList(res.data.results)
                 setNextPage(res.data.next);
                 setPrevPage(res.data.previous);
-                setNumberOfPages(res.data.count);
+                setNumberOfPages(Math.ceil(res.data.count / 10));
             } else {
                 setHasError(true);
                 setFilmList(false);
@@ -69,12 +72,25 @@ const Movies = () => {
 
     }
 
+    // Function for when search form has been submitted
     const handleSearch = (query) => {
         // Set query parameters and reset page number
         setSearchParams( { query } )
         setCurrentPage(1);
     }
 
+    // Function for when search form requests to reset/empty search results
+    const handleReset = () => {
+
+        // Set query parameters and reset page number
+        setSearchParams( {  } )
+        setCurrentPage(1);
+        // Call for new api result for all movies
+        getMovies(1);
+
+    }
+
+    // Use effect to act when page url parameter changes
     useEffect( () => {
 
         setCurrentPage(page)
@@ -85,21 +101,24 @@ const Movies = () => {
     useEffect( () => {
 
         getMovies(currentPage, query);
+        window.scrollTo(0,0);
         
-    }, [query, currentPage]);
+    }, [currentPage, query]);
 
     return (
         <>
-            <h1>List of people</h1>
+            <h1>List of movies</h1>
 
             {/* Search form component */}
-            <SearchForm onSearch={handleSearch} />
+            <SearchForm onSearch={handleSearch} onShowAll={handleReset} />
 
             {
+                // Apply loading component when loading state is true
                 loading && <Loading resource='Movies' />
             }
 
             {
+                // Apply error component when hasError state is true
                 hasError && <ErrorEl resource='Movies' />
             }
 

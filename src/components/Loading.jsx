@@ -1,3 +1,9 @@
+/**
+ * 
+ *  Component for rendering loading elements
+ * 
+ */
+
 const Loading = ({resource}) => {
     return (
         <div className="loading-container">

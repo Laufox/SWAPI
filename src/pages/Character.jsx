@@ -8,21 +8,23 @@ import Button from 'react-bootstrap/Button';
 import SwapiAPI from '../services/SwapiAPI';
 // Import function to extract ID value from URL
 import { getIdFromUrl } from '../services/getIdFromUrl';
+// Import own components
 import Loading from '../components/Loading';
 import ErrorEl from '../components/ErrorEl';
 
 /**
  * 
  *  Page for traffic to /people/:id
- *  @returns full list of a specific character
  * 
  */
+
 const Character = () => {
 
     // Get id param from route
     const { id } = useParams();
     // Characters info for current page
     const [characterData, setCharacterData] = useState(false);
+    // Usestates for loading and error status
     const [loading, setLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
 
@@ -56,14 +58,17 @@ const Character = () => {
             <h1>Character info</h1>
 
             {
+                // Apply loading component when loading state is true
                 loading && <Loading resource='Character' />
             }
 
             {
+                // Apply error component when hasError state is true
                 hasError && <ErrorEl resource='Character' />
             }
 
             {
+                // If characterData state is truthy, print information about it
                 characterData && (
                     <article className='character-item-article'>
                         <header>
@@ -87,8 +92,9 @@ const Character = () => {
                             <h3>Stars in: </h3>
                             <div className='film-list'>
                             {
+                                // List navigation to all films the character stars in
                                 characterData.films.map( (film, index) => {
-                                    return <Button key={index} variant="info" as={Link} to={`/films/${getIdFromUrl(film)}`}>{getIdFromUrl(film).padStart(2, '0')}</Button>
+                                    return <Button key={index} variant="success" as={Link} to={`/films/${getIdFromUrl(film)}`}>{getIdFromUrl(film).padStart(2, '0')}</Button>
                                 } )
                             }
                             </div>

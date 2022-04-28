@@ -1,3 +1,9 @@
+/**
+ * 
+ *  Component for rendering error elements
+ * 
+ */
+
 const ErrorEl = ({resource}) => {
     return (
         <div className="loading-container">

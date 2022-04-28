@@ -5,33 +5,36 @@ import { useSearchParams } from 'react-router-dom';
 // Import own components
 import PeopleList from '../components/PeopleList';
 import SearchForm from '../components/SearchForm';
-// Import functions that communicate with SWAPI API
-import SwapiAPI from '../services/SwapiAPI';
 import Pagination from '../components/Pagination';
 import Loading from '../components/Loading';
 import ErrorEl from '../components/ErrorEl';
+// Import functions that communicate with SWAPI API
+import SwapiAPI from '../services/SwapiAPI';
 
 /**
  * 
  *  Page for traffic to /people
- *  @returns full list of people with pagination
  * 
  */
+
 const People = () => {
 
     // Search param to show results for page given by url query
     const [searchParams, setSearchParams] = useSearchParams();
-    // If url has page param use it in page constant, otherwise set it to one
+    // Page constant to hold value of page parameter in url, or one if paramter is not set
     const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
+    // Query constant to hold value of query parameter in url
     const query = searchParams.get('query');
     // Characters info for current page
     const [peopleList, setPeopleList] = useState(false);
-    // Page that is currently displaying
+    // Pagination page that is currently displaying
     const [currentPage, setCurrentPage] = useState(page);
     // Usestates for knowing if pagination button should be clickable
     const [prevPage, setPrevPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
+    // Amount of pagination pages to display
     const [numberOfPages, setNumberOfPages] = useState();
+    // Usestates for loading and error status
     const [loading, setLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
 
@@ -40,13 +43,13 @@ const People = () => {
 
         setLoading(true);
         try {
-            // If there's a query parameter, request a search otherwise request all people
+            // If there's a query parameter, request a search, otherwise request all people
             const res = query ? await SwapiAPI.getSearch("people", query, page) : await SwapiAPI.getAllPeople(page);
             if (res.status === 200) {
                 setPeopleList(res.data.results)
                 setNextPage(res.data.next);
                 setPrevPage(res.data.previous);
-                setNumberOfPages(res.data.count);
+                setNumberOfPages(Math.ceil(res.data.count / 10));
             } else {
                 setHasError(true);
                 setPeopleList(false);
@@ -69,6 +72,7 @@ const People = () => {
         
     }
 
+    // Function for when search form has been submitted
     const handleSearch = (query) => {
 
         // Set query parameters and reset page number
@@ -77,15 +81,18 @@ const People = () => {
 
     }
 
+    // Function for when search form requests to reset/empty search results
     const handleReset = () => {
 
         // Set query parameters and reset page number
         setSearchParams( {  } )
         setCurrentPage(1);
+        // Call for new api result for all people
         getPeople(1);
 
     }
 
+    // Use effect to act when page url parameter changes
     useEffect( () => {
 
         setCurrentPage(page)
@@ -96,25 +103,28 @@ const People = () => {
     useEffect( () => {
 
         getPeople(currentPage, query);
+        window.scrollTo(0, 0);
         
-    }, [query, currentPage]);
+    }, [currentPage, query]);
 
     return (
         <>
-            <h1>List of people</h1>
+            <h1>List of characters</h1>
 
             {/* Search form component */}
             <SearchForm onSearch={handleSearch} onShowAll={handleReset} />
 
             {
+                // Apply loading component when loading state is true
                 loading && <Loading resource='Characters' />
             }
 
             {
+                // Apply error component when hasError state is true
                 hasError && <ErrorEl resource='Movies' />
             }
 
-            {/* If theres any result from API, display list component to user */}
+            {/* If theres any result from API, display list and pagination component to user */}
             {
                 peopleList && (
                     <>

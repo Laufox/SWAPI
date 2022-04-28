@@ -1,6 +1,6 @@
 /**
-     * Extract ID from SWAPI url
-     */
+* Extract ID from SWAPI url
+*/
 
  export const getIdFromUrl = (url) => {
     // eslint-disable-next-line no-unused-vars
