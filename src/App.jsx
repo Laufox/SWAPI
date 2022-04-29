@@ -13,6 +13,7 @@ import People from './pages/People';
 import Movies from './pages/Movies';
 import Character from './pages/Character';
 import Film from './pages/Film';
+import NotFound from './pages/NotFound';
 
 /**
  * 
@@ -35,6 +36,7 @@ const App = () => {
                     <Route path="/people/:id" element={<Character />} />
                     <Route path="/films" element={<Movies />} />
                     <Route path="/films/:id" element={<Film />} />
+                    <Route path="/*" element={<NotFound />} />
                 </Routes>
             </Container>
             
