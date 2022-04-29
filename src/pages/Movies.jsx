@@ -43,6 +43,7 @@ const Movies = () => {
     const getMovies = async (page, query=null) => {
 
         setLoading(true);
+        setFilmList(false);
         setEmptySearchRespons(false);
         try {
             // If there's a query parameter, request a search, otherwise request all people
@@ -50,7 +51,6 @@ const Movies = () => {
             if (res.status === 200) {
                 if (res.data.count === 0) {
                     setEmptySearchRespons(true);
-                    setFilmList(false);
                 } else {
                     setFilmList(res.data.results)
                     setNextPage(res.data.next);
@@ -60,15 +60,12 @@ const Movies = () => {
                 
             } else {
                 setHasError(true);
-                setFilmList(false);
             }
         } catch (error) {
             setHasError(true);
-            setFilmList(false);
         } finally {
             setLoading(false);
         }
-        
         
     }
 
@@ -136,7 +133,7 @@ const Movies = () => {
                 // If a search had no hits, inform the user
                 emptySearchResponse && (
                     <div className='loading-container'>
-                        <p>There were no matches for your search</p>
+                        <p>There were no matches for {query}</p>
                     </div>
                     
                 )
@@ -146,7 +143,7 @@ const Movies = () => {
             {
                 filmList && (
                     <>
-                    <FilmList list={filmList} title="Movies" />
+                    <FilmList list={filmList} title={query ? `Showing search results for ${query}:` : 'All movies:' } />
                     <Pagination paging={ {prevPage, nextPage, currentPage, numberOfPages} } onSwitch={ switchPage } />
                     </>
                 )

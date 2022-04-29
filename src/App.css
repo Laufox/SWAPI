@@ -11,7 +11,8 @@
 }
 
 .swapi-list .list-group-item {
-    flex-basis: 45%;
+    flex-basis: 47%;
+    max-width: 500px;
     border: 1px solid rgba(150, 150, 150);
     padding: 0;
 }
@@ -52,14 +53,17 @@
     border: 1px solid black;
 }
 
-.film-item-article header{
+.film-item-article header, .character-item-article header{
     border-bottom: 1px solid black;
+}
+
+.film-item-article main, .character-item-article main {
+    margin: 1rem 0;
 }
 
 .film-item-article main {
     display: flex;
     flex-flow: row wrap;
-    margin: 1rem 0;
 }
 
 .film-item-article main h3 {
@@ -82,7 +86,7 @@
     flex-flow: row wrap;
     gap: 1rem;
     width: 50%;
-    margin-left: 4rem;
+    margin: 2rem;
 }
 
 .index-list {
@@ -144,4 +148,12 @@
 
 .loading-container p {
     font-size: 2rem;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+}
+
+.nav-link {
+    font-size: 1.5rem;
 }

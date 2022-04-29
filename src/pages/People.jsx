@@ -43,6 +43,7 @@ const People = () => {
     const getPeople = async (page, query = null) => {
 
         setLoading(true);
+        setPeopleList(false);
         setEmptySearchRespons(false);
         try {
             // If there's a query parameter, request a search, otherwise request all people
@@ -50,7 +51,6 @@ const People = () => {
             if (res.status === 200) {
                 if (res.data.count === 0) {
                     setEmptySearchRespons(true);
-                    setPeopleList(false);
                 }else {
                     setPeopleList(res.data.results)
                     setNextPage(res.data.next);
@@ -60,15 +60,12 @@ const People = () => {
                 
             } else {
                 setHasError(true);
-                setPeopleList(false);
             }
         } catch (error) {
             setHasError(true);
-            setPeopleList(false);
         } finally {
             setLoading(false);
         }
-        
         
     }
 
@@ -138,7 +135,7 @@ const People = () => {
                 // If a search had no hits, inform the user
                 emptySearchResponse && (
                     <div className='loading-container'>
-                        <p>There were no matches for your search</p>
+                        <p>There were no matches for {query}</p>
                     </div>
                     
                 )
@@ -148,7 +145,7 @@ const People = () => {
             {
                 peopleList && (
                     <>
-                    <PeopleList list={peopleList} title="Characters" />
+                    <PeopleList list={peopleList} title={query ? `Showing search results for ${query}:` : 'All characters:' } />
                     <Pagination paging={{prevPage, nextPage, currentPage, numberOfPages}} onSwitch={ switchPage } />
                     </>
                 )
