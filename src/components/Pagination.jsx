@@ -1,5 +1,5 @@
 // Import from react-bootstrap
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
 
 /**
  * 
@@ -32,7 +32,7 @@ const Pagination = ({paging, onSwitch}) => {
                 {
                     // Print out list of available pages
                     pages.map( (page, index) => {
-                        return <span key={index} className={page === paging.currentPage ? 'pages-list-item current' : 'pages-list-item'}>{page.toString().padStart(2, '0')}</span>
+                        return <span key={index} onClick={ () => { onSwitch( (index+1-paging.currentPage) ) } } className={page === paging.currentPage ? 'pages-list-item current' : 'pages-list-item'}>{page.toString().padStart(2, '0')}</span>
                     } )
                 }
             </div>

@@ -119,10 +119,19 @@
     background-color: rgb(238, 227, 216);
     border: 2px solid rgb(29, 21, 21);
     text-align: center;
+    cursor: pointer;
 }
 
 .pages-list-item.current {
     background-color: rgb(238, 255, 216);
+}
+
+.pages-list-item:hover { 
+    background-color: rgba(208, 197, 186, 0.8);
+}
+
+.pages-list-item.current:hover { 
+    background-color: rgba(208, 225, 186, 0.8);
 }
 
 .loading-container {

@@ -131,7 +131,7 @@ const People = () => {
 
             {
                 // Apply error component when hasError state is true
-                hasError && <ErrorEl resource='Movies' />
+                hasError && <ErrorEl resource='Characters' />
             }
 
             {
