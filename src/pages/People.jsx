@@ -25,46 +25,45 @@ const People = () => {
     const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
     // Query constant to hold value of query parameter in url
     const query = searchParams.get('query');
-    // Characters info for current page
-    const [peopleList, setPeopleList] = useState(false);
+    // Characters info
+    const [peopleData, setPeopleData] = useState(false);
     // Pagination page that is currently displaying
     const [currentPage, setCurrentPage] = useState(page);
-    // Usestates for knowing if pagination button should be clickable
-    const [prevPage, setPrevPage] = useState(null);
-    const [nextPage, setNextPage] = useState(null);
-    // Amount of pagination pages to display
-    const [numberOfPages, setNumberOfPages] = useState();
     // Usestates for loading and error status
     const [loading, setLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
-    const [emptySearchResponse, setEmptySearchRespons] = useState(false);
 
     // Request data from API and apply reult to useStates
     const getPeople = async (page, query = null) => {
 
         setLoading(true);
-        setPeopleList(false);
-        setEmptySearchRespons(false);
+        setPeopleData(false);
+        setHasError(false);
+
         try {
+
             // If there's a query parameter, request a search, otherwise request all people
             const res = query ? await SwapiAPI.getSearch("people", query, page) : await SwapiAPI.getResourceAll("people", page);
             if (res.status === 200) {
-                if (res.data.count === 0) {
-                    setEmptySearchRespons(true);
-                }else {
-                    setPeopleList(res.data.results)
-                    setNextPage(res.data.next);
-                    setPrevPage(res.data.previous);
-                    setNumberOfPages(Math.ceil(res.data.count / 10));
-                }
+
+                setPeopleData(res.data);
                 
             } else {
+
                 setHasError(true);
+                setPeopleData(false);
+
             }
+
         } catch (error) {
+
             setHasError(true);
+            setPeopleData(false);
+
         } finally {
+
             setLoading(false);
+
         }
         
     }
@@ -133,7 +132,7 @@ const People = () => {
 
             {
                 // If a search had no hits, inform the user
-                emptySearchResponse && (
+                peopleData && !peopleData.count && (
                     <div className='loading-container'>
                         <p>There were no matches for {query}</p>
                     </div>
@@ -143,10 +142,15 @@ const People = () => {
 
             {/* If theres any result from API, display list and pagination component to user */}
             {
-                peopleList && (
+                peopleData && peopleData.results.length > 0 && (
                     <>
-                    <PeopleList list={peopleList} title={query ? `Showing search results for ${query}:` : 'All characters:' } />
-                    <Pagination paging={{prevPage, nextPage, currentPage, numberOfPages}} onSwitch={ switchPage } />
+                    <PeopleList list={peopleData.results} title={query ? `Showing search results for "${query}":` : 'All characters:' } />
+                    <Pagination paging={ {
+                            prevPage: peopleData.previous, 
+                            nextPage: peopleData.next, 
+                            currentPage, 
+                            numberOfPages: Math.ceil(peopleData.count / 10) 
+                        } } onSwitch={ switchPage } />
                     </>
                 )
             }

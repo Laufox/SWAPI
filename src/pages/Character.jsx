@@ -32,18 +32,28 @@ const Character = () => {
     const getCharacter = async (id) => {
 
         setLoading(true);
+
         try {
+
             const res = await SwapiAPI.getResourceOne("people", id);
             if (res.status === 200) {
-                setCharacterData(res.data)
+
+                setCharacterData(res.data);
+
             }else {
+
                 setHasError(true);
                 setCharacterData(false);
+
             }
+
         } catch (error) {
+
             setHasError(true);
             setCharacterData(false);
+
         }
+        
         setLoading(false);
         
     }

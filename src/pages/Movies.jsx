@@ -25,46 +25,45 @@ const Movies = () => {
     const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1;
     // Query constant to hold value of query parameter in url
     const query = searchParams.get('query');
-    // Films info for current page
-    const [filmList, setFilmList] = useState(false);
+    // Movies info
+    const [filmData, setFilmData] = useState(false);
     // Pagination page that is currently displaying
     const [currentPage, setCurrentPage] = useState(page);
-    // Usestates for knowing if pagination button should be clickable
-    const [prevPage, setPrevPage] = useState(null);
-    const [nextPage, setNextPage] = useState(null);
-    // Amount of pagination pages to display
-    const [numberOfPages, setNumberOfPages] = useState();
     // Usestates for loading and error status
     const [loading, setLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
-    const [emptySearchResponse, setEmptySearchRespons] = useState(false);
 
     // Request data from API and apply reult to useStates
     const getMovies = async (page, query=null) => {
 
         setLoading(true);
-        setFilmList(false);
-        setEmptySearchRespons(false);
+        setFilmData(false);
+        setHasError(false);
+
         try {
+
             // If there's a query parameter, request a search, otherwise request all people
             const res = query ? await SwapiAPI.getSearch("films", query, page) : await SwapiAPI.getResourceAll("films", page);
             if (res.status === 200) {
-                if (res.data.count === 0) {
-                    setEmptySearchRespons(true);
-                } else {
-                    setFilmList(res.data.results)
-                    setNextPage(res.data.next);
-                    setPrevPage(res.data.previous);
-                    setNumberOfPages(Math.ceil(res.data.count / 10));
-                }
+
+                setFilmData(res.data);   
                 
             } else {
+
                 setHasError(true);
+                setFilmData(false);
+
             }
+
         } catch (error) {
+
             setHasError(true);
+            setFilmData(false);
+
         } finally {
+
             setLoading(false);
+
         }
         
     }
@@ -131,7 +130,7 @@ const Movies = () => {
 
             {
                 // If a search had no hits, inform the user
-                emptySearchResponse && (
+                filmData && !filmData.count && (
                     <div className='loading-container'>
                         <p>There were no matches for {query}</p>
                     </div>
@@ -141,10 +140,15 @@ const Movies = () => {
 
             {/* If theres any result from API, display list component to user */}
             {
-                filmList && (
+                filmData && filmData.results.length > 0 && (
                     <>
-                    <FilmList list={filmList} title={query ? `Showing search results for ${query}:` : 'All movies:' } />
-                    <Pagination paging={ {prevPage, nextPage, currentPage, numberOfPages} } onSwitch={ switchPage } />
+                    <FilmList list={filmData.results} title={query ? `Showing search results for "${query}":` : 'All movies:' } />
+                    <Pagination paging={ {
+                            prevPage: filmData.previous, 
+                            nextPage: filmData.next, 
+                            currentPage, 
+                            numberOfPages: Math.ceil(filmData.count / 10)
+                        } } onSwitch={ switchPage } />
                     </>
                 )
             }

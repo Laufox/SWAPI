@@ -13,14 +13,9 @@ const Pagination = ({paging, onSwitch}) => {
     const pages = [];
 
     // Push elements to page array as many times as the numberOfPages property in paging argument
-    const calcPages = () => {
-
-        for (let i = 1; i <= paging.numberOfPages; i++) {
-            pages.push(i);
-        }
-
+    for (let i = 1; i <= paging.numberOfPages; i++) {
+        pages.push(i);
     }
-    calcPages();
 
     return (
         <div className='pagination-container'>
@@ -32,7 +27,13 @@ const Pagination = ({paging, onSwitch}) => {
                 {
                     // Print out list of available pages
                     pages.map( (page, index) => {
-                        return <span key={index} onClick={ () => { onSwitch( (index+1-paging.currentPage) ) } } className={page === paging.currentPage ? 'pages-list-item current' : 'pages-list-item'}>{page.toString().padStart(2, '0')}</span>
+                        return <span 
+                            key={index} 
+                            onClick={ () => { onSwitch( (index + 1 - paging.currentPage) ) } } 
+                            className={page === paging.currentPage ? 'pages-list-item current' : 'pages-list-item'}
+                        >
+                            {page.toString().padStart(2, '0')}
+                        </span>
                     } )
                 }
             </div>
