@@ -33,7 +33,7 @@ const Film = () => {
 
         setLoading(true);
         try {
-            const res = await SwapiAPI.getMovie(id);
+            const res = await SwapiAPI.getResourceOne("films", id);
             if (res.status === 200) {
                 setFilmData(res.data)
             }else {

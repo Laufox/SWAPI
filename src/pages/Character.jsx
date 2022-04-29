@@ -33,7 +33,7 @@ const Character = () => {
 
         setLoading(true);
         try {
-            const res = await SwapiAPI.getCharacter(id);
+            const res = await SwapiAPI.getResourceOne("people", id);
             if (res.status === 200) {
                 setCharacterData(res.data)
             }else {

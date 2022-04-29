@@ -47,7 +47,7 @@ const Movies = () => {
         setEmptySearchRespons(false);
         try {
             // If there's a query parameter, request a search, otherwise request all people
-            const res = query ? await SwapiAPI.getSearch("films", query, page) : await SwapiAPI.getAllFilms(page);
+            const res = query ? await SwapiAPI.getSearch("films", query, page) : await SwapiAPI.getResourceAll("films", page);
             if (res.status === 200) {
                 if (res.data.count === 0) {
                     setEmptySearchRespons(true);
