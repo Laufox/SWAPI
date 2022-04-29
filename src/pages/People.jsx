@@ -37,19 +37,27 @@ const People = () => {
     // Usestates for loading and error status
     const [loading, setLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
+    const [emptySearchResponse, setEmptySearchRespons] = useState(false);
 
     // Request data from API and apply reult to useStates
     const getPeople = async (page, query = null) => {
 
         setLoading(true);
+        setEmptySearchRespons(false);
         try {
             // If there's a query parameter, request a search, otherwise request all people
             const res = query ? await SwapiAPI.getSearch("people", query, page) : await SwapiAPI.getAllPeople(page);
             if (res.status === 200) {
-                setPeopleList(res.data.results)
-                setNextPage(res.data.next);
-                setPrevPage(res.data.previous);
-                setNumberOfPages(Math.ceil(res.data.count / 10));
+                if (res.data.count === 0) {
+                    setEmptySearchRespons(true);
+                    setPeopleList(false);
+                }else {
+                    setPeopleList(res.data.results)
+                    setNextPage(res.data.next);
+                    setPrevPage(res.data.previous);
+                    setNumberOfPages(Math.ceil(res.data.count / 10));
+                }
+                
             } else {
                 setHasError(true);
                 setPeopleList(false);
@@ -57,8 +65,10 @@ const People = () => {
         } catch (error) {
             setHasError(true);
             setPeopleList(false);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
+        
         
     }
 
@@ -122,6 +132,16 @@ const People = () => {
             {
                 // Apply error component when hasError state is true
                 hasError && <ErrorEl resource='Movies' />
+            }
+
+            {
+                // If a search had no hits, inform the user
+                emptySearchResponse && (
+                    <div className='loading-container'>
+                        <p>There were no matches for your search</p>
+                    </div>
+                    
+                )
             }
 
             {/* If theres any result from API, display list and pagination component to user */}

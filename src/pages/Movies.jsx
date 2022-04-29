@@ -37,19 +37,27 @@ const Movies = () => {
     // Usestates for loading and error status
     const [loading, setLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
+    const [emptySearchResponse, setEmptySearchRespons] = useState(false);
 
     // Request data from API and apply reult to useStates
     const getMovies = async (page, query=null) => {
 
         setLoading(true);
+        setEmptySearchRespons(false);
         try {
             // If there's a query parameter, request a search, otherwise request all people
             const res = query ? await SwapiAPI.getSearch("films", query, page) : await SwapiAPI.getAllFilms(page);
             if (res.status === 200) {
-                setFilmList(res.data.results)
-                setNextPage(res.data.next);
-                setPrevPage(res.data.previous);
-                setNumberOfPages(Math.ceil(res.data.count / 10));
+                if (res.data.count === 0) {
+                    setEmptySearchRespons(true);
+                    setFilmList(false);
+                } else {
+                    setFilmList(res.data.results)
+                    setNextPage(res.data.next);
+                    setPrevPage(res.data.previous);
+                    setNumberOfPages(Math.ceil(res.data.count / 10));
+                }
+                
             } else {
                 setHasError(true);
                 setFilmList(false);
@@ -57,8 +65,10 @@ const Movies = () => {
         } catch (error) {
             setHasError(true);
             setFilmList(false);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
+        
         
     }
 
@@ -120,6 +130,16 @@ const Movies = () => {
             {
                 // Apply error component when hasError state is true
                 hasError && <ErrorEl resource='Movies' />
+            }
+
+            {
+                // If a search had no hits, inform the user
+                emptySearchResponse && (
+                    <div className='loading-container'>
+                        <p>There were no matches for your search</p>
+                    </div>
+                    
+                )
             }
 
             {/* If theres any result from API, display list component to user */}
