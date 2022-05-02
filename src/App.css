@@ -5,14 +5,15 @@
 .swapi-list {
     margin: 1rem 0;
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column;
     justify-content: space-evenly;
+    align-items: center;
     gap: 1rem;
 }
 
 .swapi-list .list-group-item {
     flex-basis: 47%;
-    max-width: 500px;
+    max-width: 450px;
     border: 1px solid rgba(150, 150, 150);
     padding: 0;
 }
@@ -113,8 +114,7 @@
 }
 
 .pages-list-container {
-    display: flex;
-    gap: 0.3rem;
+    display: none;
 }
 
 .pages-list-item {
@@ -156,4 +156,17 @@
 
 .nav-link {
     font-size: 1.5rem;
+}
+
+@media screen and (min-width: 600px) {
+
+    .swapi-list {
+        flex-flow: row wrap;
+    }
+
+    .pages-list-container {
+        display: flex;
+        gap: 0.3rem;
+    }
+
 }
